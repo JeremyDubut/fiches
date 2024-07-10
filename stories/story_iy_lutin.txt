@@ -1,0 +1,1 @@
+-- Je vais vous décrire un animal: c'est un mammifère de la famille des canidés, il se nourrit de viande, il est carnivore. Son petit est le chiot. Qui est-il? -- Je peux vous le dire: c'est le chien !
