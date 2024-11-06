@@ -12,8 +12,9 @@ def fiche_tex(
     numbers1: List[int],
     numbers2: List[int],
     size_tashizan: int,
-    story: str,
-    num_add: List[list]
+    num_add: List[list],
+    num_sub: List[list],
+    story: str =""
 ) -> ():
 
     # open the tex file
@@ -33,7 +34,10 @@ def fiche_tex(
     # write the tashizan exercises
     f.write("\\begin{center}\n")
     tashizan_tex(f,numbers1,numbers2,size_tashizan)
+    f.write("\n\\end{center}~\\\\\n")
+    f.write("\n\\begin{center}\n")
     big_tashizan_tex(f,num_add)
+    big_hikizan_tex(f,num_sub)
     f.write("\n\\end{center}")
 
     # some padding
@@ -76,12 +80,12 @@ def tashizan_tex(
     f.write(header)
 
     # Japanese header
-    jph = "\t\\cline{1-3}\n\t\\multicolumn{3}{|c|}{足し算\\pgfmathparse{int("
+    jph = "\t\\cline{1-3}\n\t\\multicolumn{3}{|c|}{掛算\\pgfmathparse{int("
     jph = jph+str(stashi)+"*"+str(stashi)+")}\\pgfmathresultマス} \\\\\n"
     f.write(jph+closer)
 
     # first line
-    fl = "\t$+$ "
+    fl = "\t$\\times$ "
     for k in numbers1:
         fl = fl + "& " + str(k) + " "
     fl = fl + "\\\\" + closer
@@ -106,10 +110,26 @@ def big_tashizan_tex(
 ) -> ():
 
     for nums in num_add:
-        f.write("\\qquad\\qquad")
+        f.write("\\qquad")
         f.write("\\begin{tabular}{ccc}\n")
         f.write("\t& "+str(nums[0][0])+" & "+str(nums[0][1])+"\\\\\n")
         f.write("\t $+$ & "+str(nums[1][0])+" & "+str(nums[1][1])+"\\\\\n")
         f.write("\t\\hline\n")
         f.write("\t & & \\\\\n")
         f.write("\\end{tabular}\n")
+    f.write("\\qquad\\qquad")
+
+def big_hikizan_tex(
+    f,
+    num_sub: List[list]
+) -> ():
+
+    for nums in num_sub:
+        # f.write("\\qquad\\qquad")
+        f.write("\\begin{tabular}{ccc}\n")
+        f.write("\t& "+str(nums[0][0])+" & "+str(nums[0][1])+"\\\\\n")
+        f.write("\t $-$ & "+str(nums[1][0])+" & "+str(nums[1][1])+"\\\\\n")
+        f.write("\t\\hline\n")
+        f.write("\t & & \\\\\n")
+        f.write("\\end{tabular}\n")
+        f.write("\\qquad")

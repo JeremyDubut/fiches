@@ -40,18 +40,32 @@ def main() -> ():
     rand_add[1-swap][1][1] = randrange(10-rand_add[1-swap][0][1],10)
     rand_add[1-swap][0][0] = randrange(1,8)
     rand_add[1-swap][1][0] = randrange(1,9-rand_add[1-swap][0][0])
-    stories = os.listdir("fiches/stories/")
-    random_story = randrange(0,len(stories))
-    st = open("fiches/stories/"+stories[random_story],"r")
-    story = st.readline()
-    st.close()
+    swap = randrange(0,2)
+    rand_sub = [[[0,0],[0,0]],[[0,0],[0,0]]]
+    rand_sub[swap][0][1] = randrange(1,10)
+    rand_sub[swap][1][1] = randrange(0,rand_add[swap][0][1])
+    rand_sub[swap][0][0] = randrange(2,9)
+    rand_sub[swap][1][0] = randrange(1,rand_add[swap][0][0])
+    rand_sub[1-swap][0][1] = randrange(1,10)
+    rand_sub[1-swap][1][1] = randrange(10-rand_add[1-swap][0][1],10)
+    rand_sub[1-swap][0][0] = randrange(2,9)
+    rand_sub[1-swap][1][0] = randrange(1,rand_add[1-swap][0][0])
+    # stories = os.listdir("fiches/stories/")
+    # random_story = randrange(0,len(stories))
+    # st = open("fiches/stories/"+stories[random_story],"r")
+    # story = st.readline()
+    # st.close()
     # log.debug(f"One story randomly chosen among {stories}")
-    fiche_tex(rand_words,rand_n1,rand_n2,args.t,story,rand_add)
+    log.info(f"Generating the tex file")
+    fiche_tex(rand_words,rand_n1,rand_n2,args.t,rand_add,rand_sub)
 
     # generate and open the pdf
     # use something safer
 
+    log.info(f"Generating the pdf file")
     os.system("pdflatex fiches/tex/fiche.tex > /dev/null 2>&1")
+    
+    log.info(f"Cleaning up")
     os.system("rm fiche.aux")
     os.system("rm fiche.log")
     os.system("mv fiche.pdf fiches/tex/fiche.pdf")
