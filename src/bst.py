@@ -34,7 +34,7 @@ class BST:
     def insert(
         self,
         det:str,
-        word:str):
+        word:str) -> None:
 
         if not self.word:
             self.det = det

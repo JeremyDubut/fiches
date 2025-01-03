@@ -13,7 +13,7 @@ from fiches.src.bst import BST
 
 determinants = ["le ", "la ", "l'", "un ", "une ", "du ", "les ", "des ", "il ", "elle ", "ma ", ""]
 
-def decompose_det(word:str) -> (str,str):
+def decompose_det(word:str) -> tuple[str,str]:
 
     for det in determinants:
         if word.startswith(det):

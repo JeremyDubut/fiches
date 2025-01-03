@@ -12,10 +12,14 @@ def fiche_tex(
     numbers1: List[int],
     numbers2: List[int],
     size_tashizan: int,
-    num_add: List[list],
-    num_sub: List[list],
+    add1: int,
+    add2: int,
+    sub1: int,
+    sub2: int,
+    mul1: int,
+    mul2: int,
     story: str =""
-) -> ():
+) -> None:
 
     # open the tex file
     f = open("fiches/tex/fiche.tex", "w")
@@ -29,19 +33,20 @@ def fiche_tex(
 
     # some padding
     f.write("\\vspace{1cm}\large\n")
-    f.write("~\\\\\n\n")
+    f.write("~\\\n\n")
 
     # write the tashizan exercises
     f.write("\\begin{center}\n")
-    tashizan_tex(f,numbers1,numbers2,size_tashizan)
+    table_op_tex(f,numbers1,numbers2,size_tashizan)
     f.write("\n\\end{center}~\\\\\n")
     f.write("\n\\begin{center}\n")
-    big_tashizan_tex(f,num_add)
-    big_hikizan_tex(f,num_sub)
+    big_op_tex(f,add1,add2,3,"+")
+    big_op_tex(f,sub1,sub2,3,"-")
+    big_op_tex(f,mul1,mul2,2,"\\times")
     f.write("\n\\end{center}")
 
     # some padding
-    f.write("\n\n~\\\\\n\n")
+    # f.write("\n\n~\\\n\n")
 
     # write a story
     f.write("{\\fontfamily{phv}\\selectfont\n")
@@ -56,7 +61,7 @@ def fiche_tex(
 def writing_tex(
     f,
     words: List[str]
-) -> ():
+) -> None:
 
     # create the lines
     for w in words:
@@ -65,12 +70,12 @@ def writing_tex(
 
 closer = "\n\t\\hline\n"
 
-def tashizan_tex(
+def table_op_tex(
     f,
     numbers1: List[int],
     numbers2: List[int],
     stashi: int
-) -> ():
+) -> None:
 
     # begin the table
     header = "\\begin{CJK}{UTF8}{min}\n\\begin{tabular}{|"
@@ -104,32 +109,32 @@ def tashizan_tex(
     f.write("\\end{tabular}\n\\end{CJK}")
 
 
-def big_tashizan_tex(
+def big_op_tex(
     f,
-    num_add: List[list]
-) -> ():
+    num1: int,
+    num2: int,
+    log: int,
+    op: str
+) -> None:
 
-    for nums in num_add:
-        f.write("\\qquad")
-        f.write("\\begin{tabular}{ccc}\n")
-        f.write("\t& "+str(nums[0][0])+" & "+str(nums[0][1])+"\\\\\n")
-        f.write("\t $+$ & "+str(nums[1][0])+" & "+str(nums[1][1])+"\\\\\n")
-        f.write("\t\\hline\n")
-        f.write("\t & & \\\\\n")
-        f.write("\\end{tabular}\n")
+    f.write("\\qquad")
+    f.write("\\begin{tabular}{")
+    for _ in range(log+1):
+        f.write("c")
+    f.write("}\n")
+    line = ""
+    mem = num1
+    for _ in range(log):
+        line = "& "+str(mem%10)+line
+        mem = mem//10
+    f.write("\t"+line+"\\\\\n")
+    line = ""
+    mem = num2
+    for _ in range(log):
+        line = "& "+str(mem%10)+line
+        mem = mem//10
+    f.write("$"+op+"$"+line+"\\\\\n")
+    f.write("\t\\hline\n")
+    f.write("\t & & \\\\\n")
+    f.write("\\end{tabular}\n")
     f.write("\\qquad\\qquad")
-
-def big_hikizan_tex(
-    f,
-    num_sub: List[list]
-) -> ():
-
-    for nums in num_sub:
-        # f.write("\\qquad\\qquad")
-        f.write("\\begin{tabular}{ccc}\n")
-        f.write("\t& "+str(nums[0][0])+" & "+str(nums[0][1])+"\\\\\n")
-        f.write("\t $-$ & "+str(nums[1][0])+" & "+str(nums[1][1])+"\\\\\n")
-        f.write("\t\\hline\n")
-        f.write("\t & & \\\\\n")
-        f.write("\\end{tabular}\n")
-        f.write("\\qquad")

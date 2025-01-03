@@ -12,7 +12,7 @@ log.setLevel(logging.DEBUG)
 from fiches.src.tex import fiche_tex
 from fiches.src.list import reset_list, load_list
     
-def main() -> ():
+def main() -> None:
 
     # Parsing arguments
     args = parse_command_line_arguments()
@@ -30,34 +30,39 @@ def main() -> ():
     rand_words = [word_list[i] for i in random_indices]
     rand_n1 = sample(range(2,10),args.t)
     rand_n2 = sample(range(3,10),args.t)
-    swap = randrange(0,2)
-    rand_add = [[[0,0],[0,0]],[[0,0],[0,0]]]
-    rand_add[swap][0][1] = randrange(0,10)
-    rand_add[swap][1][1] = randrange(0,10-rand_add[swap][0][1])
-    rand_add[swap][0][0] = randrange(1,9)
-    rand_add[swap][1][0] = randrange(1,10-rand_add[swap][0][0])
-    rand_add[1-swap][0][1] = randrange(1,10)
-    rand_add[1-swap][1][1] = randrange(10-rand_add[1-swap][0][1],10)
-    rand_add[1-swap][0][0] = randrange(1,8)
-    rand_add[1-swap][1][0] = randrange(1,9-rand_add[1-swap][0][0])
-    swap = randrange(0,2)
-    rand_sub = [[[0,0],[0,0]],[[0,0],[0,0]]]
-    rand_sub[swap][0][1] = randrange(1,10)
-    rand_sub[swap][1][1] = randrange(0,rand_add[swap][0][1])
-    rand_sub[swap][0][0] = randrange(2,9)
-    rand_sub[swap][1][0] = randrange(1,rand_add[swap][0][0])
-    rand_sub[1-swap][0][1] = randrange(1,10)
-    rand_sub[1-swap][1][1] = randrange(10-rand_add[1-swap][0][1],10)
-    rand_sub[1-swap][0][0] = randrange(2,9)
-    rand_sub[1-swap][1][0] = randrange(1,rand_add[1-swap][0][0])
-    # stories = os.listdir("fiches/stories/")
-    # random_story = randrange(0,len(stories))
-    # st = open("fiches/stories/"+stories[random_story],"r")
-    # story = st.readline()
-    # st.close()
-    # log.debug(f"One story randomly chosen among {stories}")
+
+    while True:
+        add1 = randrange(100,999)
+        add2 = randrange(100,999)
+        if add1 + add2 > 999:
+            continue
+        if add1%10 + add2%10 > 9:
+            if (add1//10)%10 + (add2//10)%10 > 8:
+                continue
+            else:
+                break
+        elif (add1//10)%10 + (add2//10)%10 > 9:
+            break
+
+    
+    while True:
+        sub1 = randrange(100,1000)
+        sub2 = randrange(100,1000)
+        if sub1 <= sub2:
+            continue
+        if sub1%10 - sub2%10 < 0:
+            if (sub1//10)%10 - (sub2//10)%10 < 1:
+                continue
+            else:
+                break
+        elif (sub1//10)%10 - (sub2//10)%10 < 0:
+            break
+
+    mul1 = randrange(10,100)
+    mul2 = randrange(10,100)
+
     log.info(f"Generating the tex file")
-    fiche_tex(rand_words,rand_n1,rand_n2,args.t,rand_add,rand_sub)
+    fiche_tex(rand_words,rand_n1,rand_n2,args.t,add1,add2,sub1,sub2,mul1,mul2)
 
     # generate and open the pdf
     # use something safer
